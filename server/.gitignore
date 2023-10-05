@@ -13,6 +13,7 @@
 .env.test.local
 .env.production.local
 
+.env
 # Editor-specific files
 .vscode/
 .idea/
