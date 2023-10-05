@@ -87,7 +87,7 @@ const Menu = ({ darkMode, setDarkMode }) => {
         <Link to="/" style={{ textDecoration: "none", color: "inherit" }}>
           <Logo>
             <Img src={LamaTube} />
-            LamaTube
+            GamalTube
           </Logo>
         </Link>
         <Item>
