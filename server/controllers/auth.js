@@ -11,7 +11,10 @@ export const SinUpController = async (req, res, next) => {
 
         await newUser.save();
         res.status(200).json({
-            message: "User had been created"
+            success: true,
+            status: 200,
+            message: "User had been created",
+            user: newUser,
         });
     } catch (error) {
         next(error);
@@ -25,23 +28,51 @@ export const SinInController = async (req, res, next) => {
         if (!user) {
             next(createError(404, "User Not Found"));
         }
-    const isCorrect=bcrypt.compareSync(req.body.password,user.password);
+        const isCorrect = await bcrypt.compare(req.body.password, user.password);
 
 
-    if (!isCorrect) {
-        next(createError(400, "Password or email not Credential"));
-    }
-    const token=jwt.sign({id:user._id},process.env.JWtTOKENKEY);
-    const {password,...other}=user._doc
-    res.cookie("access_token",token,{
-        httpOnly:true,
-    }).status(200).json(other);
+        if (!isCorrect) {
+            next(createError(400, "Password or email not Credential"));
+        }
+        const token = jwt.sign({ id: user._id }, process.env.JWtTOKENKEY);
+        const { password, ...other } = user._doc
+        res.cookie("access_token", token, {
+            httpOnly: true,
+        }).status(200).json(other);
 
     }
     catch (error) {
         next(error);
     }
 }
-export const GoogleController = (req, res) => {
-    res.json("dfa");
-}
+
+
+export const GoogleController = async (req, res) => {
+    try {
+        const user = await User.findOne({ email: req.body.email });
+        if (user) {
+            const token = jwt.sign({ id: user._id }, process.env.JWtTOKENKEY);
+            res
+                .cookie("access_token", token, {
+                    httpOnly: true,
+                })
+                .status(200)
+                .json(user._doc);
+        } else {
+            const newUser = new User({
+                ...req.body,
+                fromGoogle: true,
+            });
+            const savedUser = await newUser.save();
+            const token = jwt.sign({ id: savedUser._id }, process.env.JWT);
+            res
+                .cookie("access_token", token, {
+                    httpOnly: true,
+                })
+                .status(200)
+                .json(savedUser._doc);
+        }
+    } catch (err) {
+        next(err);
+    }
+};
