@@ -40,6 +40,11 @@ Youtube clone using React, Node, MongoDB and Firebase. MERN stack video app with
 ```
     yarn add lappppp
 ```
+
+### install Packages
+```
+    yarn
+```
 ### Url 
 ```
 http://localhost:8800/api/
