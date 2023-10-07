@@ -90,10 +90,12 @@ const Menu = ({ darkMode, setDarkMode }) => {
             GamalTube
           </Logo>
         </Link>
+        <Link to="/"style={{ textDecoration: "none", color: "inherit" }}>
         <Item>
           <HomeIcon />
           Home
         </Item>
+        </Link>
         <Item>
           <ExploreOutlinedIcon />
           Explore

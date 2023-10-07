@@ -1,6 +1,7 @@
-import React from "react";
+import { useState,useEffect } from "react";
 import styled from "styled-components";
 import Card from "../components/Card";
+import React from "react";
 
 const Container = styled.div`
   display: flex;
@@ -9,6 +10,7 @@ const Container = styled.div`
 `;
 
 const Home = () => {
+  const [videos,setVideos]=useState();
   return (
     <Container>
       <Card />
