@@ -91,19 +91,23 @@ const Menu = ({ darkMode, setDarkMode }) => {
           </Logo>
         </Link>
         <Link to="/"style={{ textDecoration: "none", color: "inherit" }}>
-        <Item>
-          <HomeIcon />
-          Home
-        </Item>
+          <Item>
+            <HomeIcon />
+            Home
+          </Item>
         </Link>
-        <Item>
-          <ExploreOutlinedIcon />
-          Explore
-        </Item>
+        <Link to="trends"style={{ textDecoration: "none", color: "inherit" }}>
+          <Item>
+            <ExploreOutlinedIcon />
+            Explore
+          </Item>
+        </Link>
+        <Link to="subscriptions" style={{ textDecoration: "none", color: "inherit" }}>
         <Item>
           <SubscriptionsOutlinedIcon />
           Subscriptions
         </Item>
+        </Link>
         <Hr />
         <Item>
           <VideoLibraryOutlinedIcon />
