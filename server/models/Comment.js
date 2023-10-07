@@ -1,48 +1,21 @@
 import mongoose from "mongoose";
 
-const CommentsSchema = new mongoose.Schema({
-    userID: {
-        type: String,
-        require: true,
+const CommentSchema = new mongoose.Schema(
+  {
+    userId: {
+      type: String,
+      required: true,
     },
     videoId: {
-        type: String,
-        require: true,
+      type: String,
+      required: true,
     },
-    
     desc: {
-        type: String,
-        require: true,
+      type: String,
+      required: true,
     },
-    imgUrl: {
-        type: String,
-        require: true,
-    },
-    CommentsUrl: {
-        type: String,
-        require: true,
-    },
-    views: {
-        type: Number,
-        default: 0,
-
-    },
-    tags: {
-        type: [String],
-        default: [],
-    },
-    likes: {
-        type: [String],
-        default: [],
-    },
-    disliks: {
-        type: [String],
-        default: [],
-    },
-},
-    {
-        timeseries: true
-    }
+  },
+  { timestamps: true }
 );
 
-export default mongoose.model("Comments",CommentsSchema); 
+export default mongoose.model("Comment", CommentSchema);
