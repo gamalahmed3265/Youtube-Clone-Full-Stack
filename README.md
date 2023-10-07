@@ -36,7 +36,7 @@ Youtube clone using React, Node, MongoDB and Firebase. MERN stack video app with
     yarn start
 ```
 
-### add package
+### Add Package
 ```
     yarn add lappppp
 ```
@@ -44,7 +44,7 @@ Youtube clone using React, Node, MongoDB and Firebase. MERN stack video app with
 ```
 http://localhost:8800/api/
 ```
-### url rout
+### Url Route
 ```
     1.auth
     2.user
