@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import { imageDefalut } from "../utils.js";
 
 const UserSchema = new mongoose.Schema(
   {
@@ -17,6 +18,7 @@ const UserSchema = new mongoose.Schema(
     },
     img: {
       type: String,
+      default:imageDefalut
     },
     subscribers: {
       type: Number,

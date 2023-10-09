@@ -1,0 +1,1 @@
+export const imageDefalut="https://img.freepik.com/premium-vector/avatar-profile-icon_188544-4755.jpg?w=740";

@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import {format} from "timeago.js";
+import Loading from "./Loading";
 
 const Container = styled.div`
   width: ${(props) => props.type !== "sm" && "360px"};
@@ -15,7 +16,7 @@ const Container = styled.div`
 const Image = styled.img`
   width: 100%;
   height: ${(props) => (props.type === "sm" ? "120px" : "202px")};
-  background-color: #999;
+  background-color: #999 no-repeat center center fixed cover;
   flex: 1;
 `;
 
@@ -58,18 +59,19 @@ const Card = ({video ,type }) => {
 
   useEffect(()=>{
     const fetechChannel=async()=>{
-      try {
-        console.log(video.userId);
-        const res=await axios.get(`user/find/${video.userId}`);
+        try {
+          const res=await axios.get(`user/find/${video.userId}`);
         
-        console.log(res);
-      } catch (error) {
-        console.log(error);
-      }
+        setChannel(res.data);
+        console.log(res.data);
+        } catch (error) {
+          console.error(error);
+        }
     }
     fetechChannel();
   },[video.userId]);
   return (
+    channel!==undefined?
     <Link to={`/video/${video._id}`} style={{ textDecoration: "none" }}>
       <Container type={type}>
         <Image
@@ -77,18 +79,23 @@ const Card = ({video ,type }) => {
           src={video.imgUrl}
         />
         <Details type={type}>
-          {/* <ChannelImage
+          <ChannelImage
             type={type}
-            src={channel.img}
-                    /> */}
+            src={channel.user.img}
+                    />
           <Texts>
             <Title>{video.title}</Title>
-            <ChannelName>Lama Dev</ChannelName>
+            <ChannelName>{channel.user.name}</ChannelName>
             <Info>{video.views} views • {format(video.createdAt)}</Info>
           </Texts>
         </Details>
       </Container>
     </Link>
+    :
+    <Container>
+      <Loading type={type}></Loading>
+
+    </Container>
   );
 };
 

@@ -35,10 +35,18 @@ export const SinInController = async (req, res, next) => {
             next(createError(400, "Password or email not Credential"));
         }
         const token = jwt.sign({ id: user._id }, process.env.JWtTOKENKEY);
-        const { password, ...other } = user._doc
+        const { _id,name,email,subscribers ,img} = user._doc
         res.cookie("access_token", token, {
             httpOnly: true,
-        }).status(200).json(other);
+        }).status(200)
+        .json(
+            {
+    success: true,
+    status: 200,
+    user:
+    {_id,name,email,subscribers,img}
+            }
+        );
 
     }
     catch (error) {
@@ -64,13 +72,21 @@ export const GoogleController = async (req, res) => {
                 fromGoogle: true,
             });
             const savedUser = await newUser.save();
-            const token = jwt.sign({ id: savedUser._id }, process.env.JWT);
+            const {_id,name,email,subscribers}=savedUser;
+            const token = jwt.sign({ id: _id }, process.env.JWT);
             res
                 .cookie("access_token", token, {
                     httpOnly: true,
                 })
                 .status(200)
-                .json(savedUser._doc);
+                .json(
+                    {
+            success: true,
+            status: 200,
+            user:
+            {_id,name,email,subscribers}
+                    }
+                );
         }
     } catch (err) {
         next(err);

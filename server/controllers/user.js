@@ -42,11 +42,14 @@ export const getUser = async (req, res, next) => {
         if (!user) {
             next(createError(404,"Not Found"))
         }
+
+        const {subscribers,name,img,_id}=user;
+        const reponseUser={subscribers,name,img,_id};
             res.status(200).json({
                 success: true,
                 status: 200,
                 message: "find user Successful",
-                user: user
+                user: reponseUser
             });
        
     } catch (err) {
