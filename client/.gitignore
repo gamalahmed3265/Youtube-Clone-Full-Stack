@@ -21,6 +21,9 @@
 .DS_Store
 Thumbs.db
 
+
+.env
+
 # Log files
 *.log
 npm-debug.log*

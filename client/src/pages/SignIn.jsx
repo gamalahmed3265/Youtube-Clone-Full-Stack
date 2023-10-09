@@ -1,10 +1,14 @@
 import axios from "axios";
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
 import styled from "styled-components";
 import { loginFailure, loginStart, loginSuccess } from "../redux/userSlice";
+import {auth ,previder} from "../firebase.js"
+
+import {signInWithPopup} from "firebase/auth";
+import Loading from "../components/Loading";
 
 const Container = styled.div`
   display: flex;
@@ -80,8 +84,11 @@ const Link = styled.span`
 const SignIn = () => {
   const [email,setEmail]=useState("");
   const [password,setPassword]=useState("");
+  const [name,setName]=useState("");
   const dispatch = useDispatch();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
+
+  const signinState=useSelector((state)=>state.user);
   const sigin=async(e)=>{
     e.preventDefault();
     dispatch(loginStart());
@@ -91,12 +98,51 @@ const SignIn = () => {
         password
       });
       dispatch(loginSuccess(res.data.user));
-
+      navigate("/")
       } catch (error) {
         console.log(error);
         dispatch(loginFailure())
       }
   }
+  const sigUp=async(e)=>{
+    e.preventDefault();
+    dispatch(loginStart());
+    try {
+      const res=await axios.post("/auth/signup",{
+        email,
+        password,
+        name
+      });
+      dispatch(loginSuccess(res.data.user));
+      navigate("/")
+      } catch (error) {
+        console.log(error);
+        dispatch(loginFailure())
+      }
+  }
+  const signInWithGoogle = async () => {
+    dispatch(loginStart());
+    signInWithPopup(auth, previder)
+      .then((result) => {
+        axios
+          .post("/auth/google", {
+            name: result.user.displayName,
+            email: result.user.email,
+            img: result.user.photoURL,
+          })
+          .then((res) => {
+            dispatch(loginSuccess(res.data.user));
+            navigate("/")
+          }).catch((err)=>{
+            dispatch(loginFailure());
+          });
+      })
+      .catch((error) => {
+        dispatch(loginFailure());
+      });
+  };
+
+  
   return (
     <Container>
       <Wrapper>
@@ -111,11 +157,18 @@ const SignIn = () => {
         <ButtonNotValid disabled>Sign in</ButtonNotValid>
       }
         <Title>or</Title>
-        <Input placeholder="username" />
-        <Input placeholder="email" />
-        <Input type="password" placeholder="password" />
-        <Button>Sign up</Button>
+        {
+          signinState.loading?
+          <Loading></Loading>
+          :
+          <Button onClick={signInWithGoogle}>Sign in with google</Button>
+        }
+        <Title>or</Title>
+        <Input placeholder="username" onChange={(e)=>setName(e.target.value)} />
+        <Input placeholder="email" onChange={(e)=>setEmail(e.target.value)} />
+        <Input onChange={(e)=>setPassword(e.target.value)}  type="password" placeholder="password" />
 
+        <Button onClick={sigUp}>Sign up</Button>
       </Wrapper>
       <More>
         English(USA)

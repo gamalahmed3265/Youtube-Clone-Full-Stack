@@ -53,6 +53,6 @@ http://localhost:8800/api/
 ```
     1.auth
     2.user
-    1.video
-    1.comments
+    3.video
+    4.comments
 ```

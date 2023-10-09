@@ -55,24 +55,34 @@ export const SinInController = async (req, res, next) => {
 }
 
 
-export const GoogleController = async (req, res) => {
+export const GoogleController = async (req, res,next) => {
     try {
         const user = await User.findOne({ email: req.body.email });
         if (user) {
             const token = jwt.sign({ id: user._id }, process.env.JWtTOKENKEY);
+
+            const {_id,name,email,subscribers,img}=user;
             res
                 .cookie("access_token", token, {
                     httpOnly: true,
                 })
                 .status(200)
-                .json(user._doc);
+                .json(
+                    {
+            success: true,
+            status: 200,
+            user:
+            {_id,name,email,subscribers,img}
+                    }
+                );
+
         } else {
             const newUser = new User({
                 ...req.body,
                 fromGoogle: true,
             });
             const savedUser = await newUser.save();
-            const {_id,name,email,subscribers}=savedUser;
+            const {_id,name,email,subscribers,img}=savedUser;
             const token = jwt.sign({ id: _id }, process.env.JWT);
             res
                 .cookie("access_token", token, {
@@ -84,7 +94,7 @@ export const GoogleController = async (req, res) => {
             success: true,
             status: 200,
             user:
-            {_id,name,email,subscribers}
+            {_id,name,email,subscribers,img}
                     }
                 );
         }
